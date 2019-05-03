@@ -223,27 +223,19 @@ class AirClient(object):
 
     def get_wifi(self):
         url = 'http://{}/di/v1/products/0/wifi'.format(self._host)
-        wifi = self._get(url)
-        pprint.pprint(wifi)
+        return self._get(url)
 
     def get_firmware(self):
         url = 'http://{}/di/v1/products/0/firmware'.format(self._host)
-        firmware = self._get(url)
-        pprint.pprint(firmware)
+        return self._get(url)
 
     def get_userinfo(self):
         url = 'http://{}/di/v1/products/0/userinfo'.format(self._host)
-        userinfo = self._get(url)
-        pprint.pprint(userinfo)
+        return self._get(url) 
 		
     def get_filters(self):
         url = 'http://{}/di/v1/products/1/fltsts'.format(self._host)
-        filters = self._get(url)
-        print('Pre-filter and Wick: clean in {} hours'.format(filters['fltsts0']))
-        if 'wicksts' in filters:
-            print('Wick filter: replace in {} hours'.format(filters['wicksts']))
-        print('Active carbon filter: replace in {} hours'.format(filters['fltsts2']))
-        print('HEPA filter: replace in {} hours'.format(filters['fltsts1']))
+        return self._get(url)
 
 
 def main():
@@ -271,19 +263,27 @@ def main():
     c = AirClient(args.ipaddr)
     c.load_key()
     if args.wifi:
-        c.get_wifi()
+        wifi = c.get_wifi()
+        pprint.pprint(wifi)
         sys.exit(0)
     if args.firmware:
-        c.get_firmware()
+        firmware = c.get_firmware()
+        pprint.pprint(firmware)
         sys.exit(0)
     if args.userinfo:
-        c.get_userinfo()
+        userinfo = c.get_userinfo()
+        pprint.pprint(userinfo)
         sys.exit(0)
     if args.wifi_ssid or args.wifi_pwd:
         c.set_wifi(args.wifi_ssid, args.wifi_pwd)
         sys.exit(0)
     if args.filters:
-        c.get_filters()
+        filters = c.get_filters()
+        print('Pre-filter and Wick: clean in {} hours'.format(filters['fltsts0']))
+        if 'wicksts' in filters:
+            print('Wick filter: replace in {} hours'.format(filters['wicksts']))
+        print('Active carbon filter: replace in {} hours'.format(filters['fltsts2']))
+        print('HEPA filter: replace in {} hours'.format(filters['fltsts1']))
         sys.exit(0)
 
     values = {}
