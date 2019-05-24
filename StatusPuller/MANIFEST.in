@@ -1,0 +1,4 @@
+include statpull/schema.sql
+graft statpull/static
+graft statpull/templates
+global-exclude *.pyc
